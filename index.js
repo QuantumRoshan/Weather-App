@@ -6,11 +6,20 @@ const btn=document.querySelector('.search button');
 const display=document.querySelector('.weather');
 display.style.display='none';
 
+function showLoader() {
+    document.getElementById('loader').style.display = 'block';
+}
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+}
+
 async function checkWeather(city){
     const respond=await fetch(apiUrl+city+`&key=${apiKey}`);
     if(respond.status==400){
         document.querySelector('.error').style.display='block'
         document.querySelector('.weather').style.display='none'
+        hideLoader();
     }
     else{
         const data=await respond.json();
@@ -38,13 +47,14 @@ async function checkWeather(city){
         else if(80<weather && weather<=100){
             weatherimg.src='images/rain.png';
         }
-        
+        hideLoader();
         display.style.display='block'
         document.querySelector('.error').style.display='none'
 
     }
 }
 btn.addEventListener('click', ()=>{
+    showLoader();
     checkWeather(city.value);
 })
 
